@@ -28,6 +28,17 @@
                     <i class="fas fa-cash-register"></i> <span>Kasir</span>
                 </a>
             </li>
+            <li class="{{ request()->is('check*') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('check.index') }}">
+                    <i class="fas fa-clipboard-list"></i> <span>Periksa Tiket</span>
+                </a>
+            </li>
+
+            <li class="{{ request()->is('role*') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('role.index') }}">
+                    <i class="fas fa-user-tag"></i> <span>Role</span>
+                </a>
+            </li>
         </ul>
     </aside>
 </div>
