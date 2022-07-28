@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use DateTime;
 use App\Models\Product;
-use App\Models\TempTransaction;
 use App\Models\Transaction;
-use App\Models\TransactionDetail;
 use Illuminate\Http\Request;
+use App\Models\TempTransaction;
+use App\Models\TransactionDetail;
 use Illuminate\Support\Facades\Auth;
 
 class CashierController extends Controller
@@ -46,7 +47,7 @@ class CashierController extends Controller
         $change = $payment - ($total + $tax);
         $grandTotal = $total + $tax;
 
-        Transaction::create([
+        $transaction = Transaction::create([
             'user_id' => $user,
             'transaction_date' => date('Y-m-d'),
             'inovice_number' => $invoice,
@@ -62,32 +63,47 @@ class CashierController extends Controller
 
         // insert into table transaction detail
         foreach ($tempTransactions as $key => $value) {
-            TransactionDetail::create([
-                'user_id' => $user,
-                'transaction_id' => $transaction->id,
-                'product_id' => $value->product_id,
-                'quantity' => $value->quantity,
-                'total_price' => $value->total_price
-            ]);
+            if ($value->quantity >= 2){
+                for ($i=0; $i < $value->quantity; $i++) {
+                    $now = DateTime::createFromFormat('U.u', microtime(true));
+                    $barcode = $now->format("u");
+                    // $unique = strtotime(date('Y-m-d H:i:s'));
+                    // $random = rand(10, 99);
+                    // $barcode = $unique . $random;
+                    $cariProduct = Product::findOrFail($value->product_id);
+                    TransactionDetail::create([
+                        'user_id' => $user,
+                        'transaction_id' => $transaction->id,
+                        'product_id' => $value->product_id,
+                        'quantity' => 1,
+                        'total_price' => $cariProduct->price,
+                        'barcode' => $barcode,
+                        'status' => 0
+                    ]);
+                }
+            } else {
+                $cariProduct = Product::findOrFail($value->product_id);
+                // $unique = strtotime(date('Y-m-d H:i:s'));
+                // $random = rand(10, 99);
+                // $barcode = $unique . $random;
+                $now = DateTime::createFromFormat('U.u', microtime(true));
+                $barcode = $now->format("u");
+
+                TransactionDetail::create([
+                    'user_id' => $user,
+                    'transaction_id' => $transaction->id,
+                    'product_id' => $value->product_id,
+                    'quantity' => $value->quantity,
+                    'total_price' => $cariProduct->price,
+                    'barcode' => $barcode,
+                    'status' => 0
+                ]);
+            }
         }
-
         
-
-        // foreach ($tempTransactions as $key => $value) {
-        //     $product = Product::where('id', $value->product_id)->first();
-        //     $transaction->detailTransactions()->create([
-        //         'user_id' => $user,
-        //         'transaction_id' => $transaction->id,
-        //         'product_id' => $value->product_id,
-        //         'quantity' => $value->quantity,
-        //         'total_price' => $value->total_price
-        //     ]);
-        // }
-        
-
         // delete all data from temp transaction
         TempTransaction::where('user_id', $user)->delete();
 
-        return response()->json('Success');
+        return response()->json($transaction->id);
     }
 }

@@ -399,12 +399,22 @@
                             showConfirmButton: false
                         })
                         getTotal()
+                        print(data);
                     }
                         
                 })
             }
         })
 
-        
+        function print(id){
+            $.ajax({
+                url: "{{ route('print.index') }}" + '/' + id,
+                method: "GET",
+                dataType: "json",
+                success: function(data) {
+                    console.log(data);
+                }
+            })
+        }       
     </script>
 @endpush
