@@ -75,6 +75,13 @@ class ProductController extends Controller
             'name' => 'required',
             'price' => 'required',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ], [
+            'name.required' => 'Nama Produk harus diisi',
+            'price.required' => 'Harga Produk harus diisi',
+            'image.required' => 'Foto Produk harus diisi',
+            'image.image' => 'Foto Produk harus berupa gambar',
+            'image.mimes' => 'Foto Produk harus berupa gambar yang memiliki ekstensi jpeg, png, jpg, gif, svg',
+            'image.max' => 'Foto Produk tidak boleh lebih dari 2048 kb',
         ]);
 
         if ($validator->fails()) {

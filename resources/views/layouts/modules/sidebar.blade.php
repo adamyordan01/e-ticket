@@ -34,6 +34,12 @@
                 </a>
             </li>
 
+            <li class="{{ request()->is('user*') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('user.index') }}">
+                    <i class="fas fa-users"></i> <span>Pengguna</span>
+                </a>
+            </li>
+
             <li class="{{ request()->is('role*') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('role.index') }}">
                     <i class="fas fa-user-tag"></i> <span>Role</span>

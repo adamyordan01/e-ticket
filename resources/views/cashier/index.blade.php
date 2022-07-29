@@ -51,7 +51,7 @@
 
 @section('content')
     <div class="row">
-        <div class="col-md-7">
+        <div class="col-lg-7 col-md-12 col-sm-12 col-xs-12">
             <div class="card">
                 <div class="card-header">
                     <h3>Produk</h3>
@@ -60,7 +60,7 @@
                     <div class="row">
                         @foreach ($products as $product)
                             <input type="hidden" name="product_id" class="d-none" id="product_id" value="{{ $product->id }}">
-                            <div class="col-md-4 col-sm-6 col-xs-12">
+                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                                 <article class="article article-style-b">
                                     <div class="article-header">
                                         <div class="article-image" data-background="{{ asset('product/' . $product->image) }}">
@@ -89,7 +89,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-5" id="dataTotal">
+        <div class="col-lg-5 col-md-12 col-sm-12 col-xs-12" id="dataTotal">
             <div class="card shadow-none">
                 <div class="card-header">
                     <h3>Pesanan</h3>

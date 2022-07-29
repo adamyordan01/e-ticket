@@ -4,10 +4,11 @@ use App\Models\TempTransaction;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\CheckController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PrintController;
 use App\Http\Controllers\CashierController;
-use App\Http\Controllers\CheckController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TempTransactionController;
@@ -48,6 +49,14 @@ Route::group(['middleware' => ['auth']], function () {
 
     Route::get('/role', [RoleController::class, 'index'])->name('role.index');
     Route::get('/role/get-role', [RoleController::class, 'getRoles'])->name('role.get-role');
+    Route::post('/role/store', [RoleController::class, 'store'])->name('role.store');
+    Route::post('role/get-role-detail', [RoleController::class, 'getRoleDetail'])->name('role.get-role-detail');
+    Route::patch('role/update', [RoleController::class, 'update'])->name('role.update');
+    Route::post('role/destroy', [RoleController::class, 'destroy'])->name('role.destroy');
+
+    Route::get('/user', [UserController::class, 'index'])->name('user.index');
+    Route::post('/user/store', [UserController::class, 'store'])->name('user.store');
+    Route::get('user/get-users', [UserController::class, 'getUsers'])->name('user.get-users');
 });
 
 

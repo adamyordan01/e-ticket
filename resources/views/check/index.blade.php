@@ -57,16 +57,16 @@
                     <h3>Periksa Tiket</h3>
                 </div>
                 <div class="card-body">
-                    <form action="#" method="get">
+                    {{-- <form action="#"> --}}
                         <div class="form-group">
                             <label for="barcode">No. Barcode</label>
                             <input type="text" id="barcode" class="form-control" autofocus>
                         </div>
-                    </form>
+                    {{-- </form> --}}
                 </div>
             </div>
         </div>
-        <div class="col-md-5" id="dataTotal">
+        <div class="col-md-5">
             <div class="card shadow-none">
                 <div class="card-header">
                     <h3>Status</h3>
