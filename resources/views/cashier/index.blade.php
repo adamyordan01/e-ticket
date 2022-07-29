@@ -221,6 +221,7 @@
                     }
                 })
                 getTotal()
+                getTotal()
             })
             
             $(document).on('click', '#delete-cart', function(e) {
@@ -237,6 +238,7 @@
                     success: function(data) {
                     }
                 })
+                getTotal()
                 getTotal()
             })
 
@@ -315,6 +317,7 @@
                 }
             })
             getTotal();
+            getTotal();
         }
 
         function funcMin(row, product){
@@ -330,6 +333,8 @@
                     success: function(data) {
                     }
                 })
+                getTotal();
+                getTotal();
             } else {
                 $.ajax({
                     url: "{{ route('temp-transaction.index') }}" + '/' + product,
@@ -345,6 +350,7 @@
                 })
             }
             
+            getTotal();
             getTotal();
         
         }
