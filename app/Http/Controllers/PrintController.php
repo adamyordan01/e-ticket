@@ -26,7 +26,7 @@ class PrintController extends Controller
                 // $profile = CapabilityProfile::load("EPSON TM-T81");
                 $connector = null;
                 // $connector = new WindowsPrintConnector("EPSON TM-T81 Receipt");
-                $connector = new WindowsPrintConnector("POS-58");
+                $connector = new WindowsPrintConnector("RPP02N");
                 $printer = new Printer($connector);
                 
                 $printer -> setJustification(Printer::JUSTIFY_CENTER);
