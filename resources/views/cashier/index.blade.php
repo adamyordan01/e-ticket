@@ -76,7 +76,7 @@
                                             Rp{{ number_format($product->price, 0, ',', '.') }}
                                         </p>
                                         <div class="article-cta">
-                                            <a class="text-decoration-none" id="add-to-cart" data-id="{{ $product->id }}" href="javascript:void(0)">
+                                            <a class="btn btn-primary btn-lg btn-block" id="add-to-cart" data-id="{{ $product->id }}" href="javascript:void(0)">
                                                 <i class="fas fa-cart-plus"></i>
                                                 Pesan Tiket
                                             </a>
