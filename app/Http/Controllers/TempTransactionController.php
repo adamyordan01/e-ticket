@@ -46,6 +46,8 @@ class TempTransactionController extends Controller
                 'total_price' => $product->price
             ]);
         }
+
+        return response()->json('Success');
     }
 
     public function update(Request $request, $id)
