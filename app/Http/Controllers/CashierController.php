@@ -32,10 +32,16 @@ class CashierController extends Controller
     {
         $user = Auth::id();
 
-        // for unique transaction invoice
-        $unique = strtotime(date('Y-m-d H:i:s'));
-        $random = rand(10000, 99999);
-        $invoice = $unique . $random;
+        // make invoice ordered
+        $lastInvoice = Transaction::select('invoice_number')->orderBy('id', 'desc')->first();
+
+        if (!$lastInvoice) {
+            $newInvoice = 'INV-000001';
+        } else {
+            $lastIncrement = substr($lastInvoice->invoice_number, -6, 6);
+            $newIncrement = 'INV-' . str_pad($lastIncrement + 1, 6, 0, STR_PAD_LEFT);
+            $newInvoice = $newIncrement;
+        }
 
         $total = 0;
         $tempTransaction = TempTransaction::where('user_id', $user)->get();
@@ -50,7 +56,7 @@ class CashierController extends Controller
         $transaction = Transaction::create([
             'user_id' => $user,
             'transaction_date' => date('Y-m-d'),
-            'inovice_number' => $invoice,
+            'invoice_number' => $newInvoice,
             'total_amount' => $total,
             'tax' => $tax,
             'grand_total' => $grandTotal,
@@ -58,7 +64,7 @@ class CashierController extends Controller
             'total_return' => $change
         ]);
 
-        $transaction = Transaction::where('inovice_number', $invoice)->first();
+        $transaction = Transaction::where('invoice_number', $newInvoice)->first();
         $tempTransactions = TempTransaction::where('user_id', $user)->get();
 
         // insert into table transaction detail
