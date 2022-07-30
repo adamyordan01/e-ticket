@@ -196,6 +196,7 @@
                 dataType: "json",
                 success: function(data) {
                     console.log(data);
+                    $('#data-table').DataTable().ajax.reload();
                     Swal.fire({
                         title: 'Berhasil',
                         text: 'Transaksi berhasil diproses',
