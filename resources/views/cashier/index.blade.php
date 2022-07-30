@@ -397,15 +397,21 @@
                     },
                     dataType: "json",
                     success: function(data) {
+                        console.log(data);
                         Swal.fire({
                             title: 'Berhasil',
                             text: 'Transaksi berhasil diproses',
                             timer: 3000,
                             icon: 'success',
                             showConfirmButton: false
+                        }).then(function () {
+                            // redirect to print page
+                            // window.location.href = "{{ route('print.index') }}" + "/" + data.id, '_blank';
+                            window.open("{{ route('print.index') }}" + "/" + data, '_blank');
                         })
                         getTotal()
                         print(data);
+                        
                     }
                         
                 })
