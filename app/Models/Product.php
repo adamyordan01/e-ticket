@@ -10,4 +10,15 @@ class Product extends Model
     use HasFactory;
 
     protected $guarded = [];
+
+    public function transactionDetails()
+    {
+        return $this->hasMany(TransactionDetail::class);
+    }
+
+    // cast
+    protected $casts = [
+        // date_event
+        'date_event' => 'date',
+    ];
 }
