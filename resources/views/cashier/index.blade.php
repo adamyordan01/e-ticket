@@ -197,9 +197,36 @@
             </div>
         </div>
     </div>
+
+    {{-- tabel daftar transaksi per kasir --}}
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3 style="font-size: 17pt" class="card-title">Daftar Transaksi</h3>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover" id="data-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 5%">#</th>
+                                    <th>Invoice</th>
+                                    <th>Tanggal</th>
+                                    <th>Total</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @push('script')
+    <script src="{{ asset('assets/js/datatable/datatables.min.js') }}"></script>
     <script>
         $.ajaxSetup({
             headers:{
@@ -208,6 +235,23 @@
         });
 
         $(document).ready(function () {
+            $("#data-table").DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: "{{ route('transaction.get-transaction') }}",
+                columns: [
+                    {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
+                    {data: 'invoice_number', name: 'invoice_number'},
+                    {data: 'transaction_date', name: 'transaction_date'},
+                    {data: 'grand_total', name: 'grand_total'},
+                    {data: 'action', name: 'action', orderable: false, searchable: false}
+                ],
+                columnDefs: [
+                    { orderable: false, targets: 0 }
+                ],
+                order: []
+            });
+
             $(document).on('click', '#add-to-cart', function(e) {
                 let product_id = $(this).data('id');
                 $.ajax({

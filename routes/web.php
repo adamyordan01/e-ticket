@@ -12,6 +12,8 @@ use App\Http\Controllers\CashierController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TempTransactionController;
+use App\Http\Controllers\TransactionController;
+
 // use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 Route::middleware(['guest'])->group(function () {
@@ -57,6 +59,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/user', [UserController::class, 'index'])->name('user.index');
     Route::post('/user/store', [UserController::class, 'store'])->name('user.store');
     Route::get('user/get-users', [UserController::class, 'getUsers'])->name('user.get-users');
+
+    Route::get('/transaction/get-transaction', [TransactionController::class, 'getTransactions'])->name('transaction.get-transaction');
 });
 
 
