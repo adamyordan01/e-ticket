@@ -25,7 +25,7 @@
                             <form action="{{ route('login.authenticate') }}" class="signin-form" method="POST">
                                 @csrf
                                 <div class="form-group mt-3">
-                                    <input name="username" type="text" class="form-control" required>
+                                    <input name="username" type="text" class="form-control" required autofocus autocomplete="off">
                                     <label class="form-control-placeholder" for="username">Username</label>
                                 </div>
                                 <div class="form-group" style="margin-top: 2.2rem !important">
