@@ -46,10 +46,39 @@
                             <input type="text" name="name" id="name" class="form-control">
                             <span class="text-danger mt-1 error-text name_error"></span>
                         </div>
-                        <div class="form-group">
+                        {{-- <div class="form-group">
                             <label for="price">Harga</label>
                             <input type="text" name="price" id="price" class="form-control">
                             <span class="text-danger mt-1 error-text price_error"></span>
+                        </div> --}}
+                        <div class="form-group">
+                            <label for="price">Harga</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <b>Rp.</b>
+                                    </div>
+                                </div>
+                                <input type="text" id="price" name="price" class="form-control price">
+                            </div>
+                            <span class="text-danger mt-1 error-text price_error"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="tax">Pajak</label>
+                            <div class="input-group">
+                                <input type="number" id="tax" name="tax" min="0" max="100" class="form-control">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <i class="fas fa-percentage"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <span class="text-danger mt-1 error-text tax_error"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="date-event">Tanggal Event</label>
+                            <input type="text" name="date_event" id="date-event" class="form-control datepicker">
+                            <span class="text-danger mt-1 error-text date_event_error"></span>
                         </div>
                         <div class="form-group">
                             <label for="image">Foto Produk</label>
@@ -91,8 +120,32 @@
                         </div>
                         <div class="form-group">
                             <label for="price">Harga</label>
-                            <input type="text" name="price" id="price" class="form-control">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <b>Rp.</b>
+                                    </div>
+                                </div>
+                                <input type="text" id="price" name="price" class="form-control price">
+                            </div>
                             <span class="text-danger mt-1 error-text price_error"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="tax">Pajak</label>
+                            <div class="input-group">
+                                <input type="number" id="tax" name="tax" min="0" max="100" class="form-control">
+                                <div class="input-group-prepend">
+                                    <div class="input-group-text">
+                                        <i class="fas fa-percentage"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <span class="text-danger mt-1 error-text tax_error"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="date-event">Tanggal Event</label>
+                            <input type="text" name="date_event" id="date-event" class="form-control datepicker">
+                            <span class="text-danger mt-1 error-text date_event_error"></span>
                         </div>
                         {{-- make radio status --}}
                         <div class="form-group mb-0">
@@ -147,9 +200,10 @@
                                 <tr>
                                     <th>#</th>
                                     <th>Produk</th>
-                                    <th>Kode Produk</th>
                                     <th>Nama Produk</th>
                                     <th>Harga</th>
+                                    <th>Pajak</th>
+                                    <th>Tanggal Event</th>
                                     <th>Status</th>
                                     <th>Aksi</th>
                                 </tr>
@@ -164,12 +218,15 @@
 
 @push('script')
     <script src="{{ asset('assets/js/datatable/datatables.min.js') }}"></script>
+    <script src="{{ asset('assets/js/maskjs/jquery.mask.js') }}"></script>
     <script>
         $.ajaxSetup({
             headers:{
                 'X-CSRF-TOKEN':$('meta[name="csrf-token"]').attr('content')
             }
         });
+
+        $('.price').mask("#.##0", {reverse: true});
 
         $(document).ready(function () {
             $("#dataTable").DataTable({
@@ -179,9 +236,10 @@
                 columns: [
                     {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
                     {data: 'image', name: 'image'},
-                    {data: 'product_code', name: 'product_code'},
                     {data: 'name', name: 'name'},
                     {data: 'price', name: 'price'},
+                    {data: 'tax', name: 'tax'},
+                    {data: 'date_event', name: 'date_event'},
                     {data: 'status', name: 'status'},
                     {data: 'action', name: 'action', orderable: false, searchable: false}
                 ],
@@ -255,9 +313,12 @@
                     },
                     dataType: 'json',
                     success: function (response) {
+                        console.log(response);
                         $('#editProductModal').find('input[name="product_id"]').val(response.detail.id);
                         $('#editProductModal').find('#name').val(response.detail.name);
                         $('#editProductModal').find('#price').val(response.detail.price);
+                        $('#editProductModal').find('#tax').val(response.detail.tax);
+                        $('#editProductModal').find('#date-event').val(response.detail.date_event);
                         if (response.detail.status == 0) {
                             $('#tidak_aktif').prop('checked', true);
                         } else {

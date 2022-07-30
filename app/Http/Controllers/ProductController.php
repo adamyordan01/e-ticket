@@ -27,8 +27,18 @@ class ProductController extends Controller
             ->editColumn('updated_at', function ($product) {
                 return Carbon::parse($product->updated_at)->format('d-m-Y');
             })
+            ->editColumn('date_event', function ($product) {
+                if ($product->date_event == null) {
+                    return '-';
+                } else {
+                    return Carbon::parse($product->date_event)->format('d-m-Y');
+                }
+            })
             ->editColumn('price', function ($product) {
                 return 'Rp. ' . number_format($product->price, 0, ',', '.');
+            })
+            ->editColumn('tax', function ($product) {
+                return $tax = $product->tax . '%';
             })
             ->editColumn('action', function ($product) {
                 $buttonEdit = '<button data-toggle="tooltip" data-placement="top" title="Edit Produk" data-id="'.$product->id.'" id="editButton" class="btn btn-info"><i class="fas fa-edit"></i></button>';
@@ -74,10 +84,16 @@ class ProductController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'price' => 'required',
+            'tax' => 'required|numeric',
+            'date_event' => 'required|date',
             'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ], [
             'name.required' => 'Nama Produk harus diisi',
             'price.required' => 'Harga Produk harus diisi',
+            'tax.required' => 'Pajak Produk harus diisi',
+            'tax.numeric' => 'Pajak Produk harus berupa angka',
+            'date_event.required' => 'Tanggal Event harus diisi',
+            'date_event.date' => 'Tanggal Event harus berupa tanggal',
             'image.required' => 'Foto Produk harus diisi',
             'image.image' => 'Foto Produk harus berupa gambar',
             'image.mimes' => 'Foto Produk harus berupa gambar yang memiliki ekstensi jpeg, png, jpg, gif, svg',
@@ -100,10 +116,15 @@ class ProductController extends Controller
                 $name = '';
             }
 
+            $price = str_replace('.', '', $request->price);
+            // dd($price);
+
             $product = new Product();
             $product->product_code = strtotime(date('Y-m-d H:i:s')) . rand(0, 9);
             $product->name = $request->name;
-            $product->price = $request->price;
+            $product->price = $price;
+            $product->tax = $request->tax;
+            $product->date_event = $request->date_event;
             $product->image = $name;
             $product->status = 1;
             $query = $product->save();
@@ -141,6 +162,8 @@ class ProductController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required',
             'price' => 'required',
+            'tax' => 'required|numeric',
+            'date_event' => 'required|date',
             'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
@@ -157,17 +180,25 @@ class ProductController extends Controller
                 $destinationPath = public_path('/product');
                 $image->move($destinationPath, $name);
 
+                $price = str_replace('.', '', $request->price);
+
                 $product = Product::find($product_id);
                 $product->name = $request->name;
-                $product->price = $request->price;
+                $product->price = $price;
+                $product->tax = $request->tax;
+                $product->date_event = $request->date_event;
                 $product->status = $request->status;
                 $product->image = $name;
                 $query = $product->save();
             }
 
+            $price = str_replace('.', '', $request->price);
+
             $product = Product::find($product_id);
             $product->name = $request->name;
-            $product->price = $request->price;
+            $product->price = $price;
+            $product->tax = $request->tax;
+            $product->date_event = $request->date_event;
             $product->status = $request->status;
             // $product->image = $name;
             $query = $product->save();

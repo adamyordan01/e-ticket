@@ -40,6 +40,7 @@
   <!-- Template CSS -->
   <link rel="stylesheet" href="{{ asset('/') }}assets/css/style.css">
   <link rel="stylesheet" href="{{ asset('/') }}assets/css/components.css">
+  <link rel="stylesheet" href="{{ asset('assets/css/daterangepicker/daterangepicker.css') }}">
 
   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap4.css"/>
   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/2.0.1/css/buttons.bootstrap4.css"/>
@@ -88,6 +89,8 @@
   <!-- Template JS File -->
   <script src="{{ asset('/') }}assets/js/scripts.js"></script>
   <script src="{{ asset('/') }}assets/js/custom.js"></script>
+  <script src="{{ asset('assets/js/daterangepicker/daterange-picker.js') }}"></script>
+  <script src="{{ asset('assets/js/moment/moment.min.js') }}"></script>
 
   {{-- sweetalert --}}
   <script type="text/javascript" src="{{ asset('sweetalert2/sweetalert2.min.js') }}"></script>
