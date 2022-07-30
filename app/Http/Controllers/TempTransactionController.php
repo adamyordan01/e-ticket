@@ -59,6 +59,11 @@ class TempTransactionController extends Controller
                 'quantity' => $data->quantity + 1,
                 'total_price' => ($data->quantity + 1) * $product->price,
             ]);
+        } else if ($request->status == 'input') {
+            $data->update([
+                'quantity' => $request->qty,
+                'total_price' => $request->qty * $product->price,
+            ]);
         } else {
             $data->update([
                 'quantity' => $data->quantity - 1,

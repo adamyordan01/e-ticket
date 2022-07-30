@@ -120,7 +120,7 @@
                                             <a href="javascript:void(0)" onclick="funcMin('{{ $loop->iteration }}', '{{ $tempTransaction->product_id }}')" class="btn btn-primary btn-sm dec-qty" id="dec-qty" data-id="{{ $tempTransaction->product_id }}">
                                                 <i class="fas fa-minus"></i>
                                             </a>
-                                            <input type="text" style="width: 40%; text-align:center" class="form-control mx-1" id="quantity{{ $loop->iteration }}" value="{{ $tempTransaction->quantity }}">
+                                            <input type="text" style="width: 40%; text-align:center" onkeyup="input('{{ $loop->iteration }}', '{{ $tempTransaction->product_id }}')" class="form-control mx-1" id="quantity{{ $loop->iteration }}" value="{{ $tempTransaction->quantity }}">
                                             <a href="javascript:void(0)" onclick="funcPlus('{{ $loop->iteration }}', '{{ $tempTransaction->product_id }}')" class="btn btn-primary btn-sm inc-qty" id="inc-qty" data-id="{{ $tempTransaction->product_id }}">
                                                 <i class="fas fa-plus"></i>
                                             </a>
@@ -332,7 +332,7 @@
                     $('#total_return2').val(total_return2);
                     $('#total_paid').val(result);
                 }
-            });
+            });            
         })
 
         function getTotal() {
@@ -344,6 +344,40 @@
                     $('#dataTotal').html(data);
                 }
             })
+        }
+
+        function input (row, product) {
+            let qty = $('#quantity' + row).val();
+
+            if (qty <= 0) {
+                $.ajax({
+                    url: "{{ route('temp-transaction.destroy') }}",
+                    method: "POST",
+                    dataType: "json",
+                    data: {
+                        product_id: product,
+                    },
+                    success: function(data) {
+                    }
+                })
+                getTotal();
+                getTotal();
+            } else {
+                $.ajax({
+                    url: "{{ route('temp-transaction.index') }}" + '/' + product,
+                    method: "PUT",
+                    dataType: "json",
+                    data: {
+                        status: 'input',
+                        qty: qty,
+                    },
+                    success: function (data) {
+                        // $('#quantity' + row).val(data.quantity);
+                    }
+                })
+                getTotal();
+                getTotal();
+            }
         }
 
         function funcPlus(row, product){
