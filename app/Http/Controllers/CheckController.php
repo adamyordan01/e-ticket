@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Check;
 use App\Models\TransactionDetail;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -10,6 +11,8 @@ class CheckController extends Controller
 {
     public function index()
     {
+        $this->authorize('viewAny', Check::class);
+        
         return view('check.index');
     }
 
