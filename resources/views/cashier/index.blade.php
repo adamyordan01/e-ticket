@@ -111,8 +111,15 @@
                                         <p class="text-primary mb-0" style="font-size: 15pt; font-weight:600">
                                             {{ $tempTransaction->product->name }}
                                         </p>
-                                        <p>
+                                        <p class="mb-1">
                                             Rp.{{ number_format($tempTransaction->product->price, 0, ',', '.') }}
+                                        </p>
+                                        <p class="text-dark mb-0" style="font-size: 10pt">
+                                            Pajak : {{ $tempTransaction->product->tax }}%
+                                        </p>
+                                        <p>
+                                            {{-- Rp.{{ number_format($tempTransaction->product->price * $tempTransaction->product->tax / 100, 0, ',', '.') }} --}}
+                                            Rp.{{ number_format($tempTransaction->product->price * ($tempTransaction->product->tax / 100) * $tempTransaction->quantity, 0, ',', '.') }}
                                         </p>
                                     </div>
                                     <div class="col-md-4 px-0">
@@ -136,7 +143,9 @@
                         </div>
                         @php
                             $subtotal += $tempTransaction->product->price * $tempTransaction->quantity;
-                            $tax += $tempTransaction->product->price * $tempTransaction->quantity * 0.11;
+                            // $tax += $tempTransaction->product->price * $tempTransaction->quantity * 0.11;
+                            $tax += $tempTransaction->product->price * $tempTransaction->quantity * $tempTransaction->product->tax / 100;
+                            // $total = $subtotal + $tax;
                             $total = $subtotal + $tax;
                         @endphp
                     @endforeach
@@ -154,7 +163,7 @@
                         </div>
                         <div class="row justify-content-between">
                             <div class="col-auto">
-                                <p style="font-size: 13pt; font-weight:500">Pajak (11%)</p>
+                                <p style="font-size: 13pt; font-weight:500">Total Pajak</p>
                             </div>
                             <div class="col-auto">
                                 <p style="font-size: 14pt; font-weight:600">Rp{{ number_format($tax, 0, ',', '.') }}</p>
@@ -213,8 +222,12 @@
                                     <th style="width: 5%">#</th>
                                     <th>Invoice</th>
                                     <th>Tanggal</th>
-                                    <th>Total</th>
-                                    <th>Action</th>
+                                    <th>Subtotal</th>
+                                    <th>Pajak</th>
+                                    <th>Grand Total</th>
+                                    <th>Bayar</th>
+                                    <th>Kembalian</th>
+                                    <th style="width: 15%">Action</th>
                                 </tr>
                             </thead>
                         </table>
@@ -243,7 +256,11 @@
                     {data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false},
                     {data: 'invoice_number', name: 'invoice_number'},
                     {data: 'transaction_date', name: 'transaction_date'},
+                    {data: 'total_amount', name: 'total_amount'},
+                    {data: 'tax', name: 'tax'},
                     {data: 'grand_total', name: 'grand_total'},
+                    {data: 'total_paid', name: 'total_paid'},
+                    {data: 'total_return', name: 'total_return'},
                     {data: 'action', name: 'action', orderable: false, searchable: false}
                 ],
                 columnDefs: [

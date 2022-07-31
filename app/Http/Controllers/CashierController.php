@@ -48,7 +48,8 @@ class CashierController extends Controller
         foreach ($tempTransaction as $key => $value) {
             $total += $value->total_price;
         }
-        $tax = ($total) * 11/100;
+        $tax = $request->tax;
+        // $tax = ($total) * 11/100;
         $payment = $request->total_paid;
         $change = $payment - ($total + $tax);
         $grandTotal = $total + $tax;

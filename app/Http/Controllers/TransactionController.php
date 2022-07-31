@@ -17,7 +17,11 @@ class TransactionController extends Controller
         $transactions = DB::select("
             SELECT
                 transactions.id,
+                transactions.total_amount,
                 transactions.grand_total,
+                transactions.tax,
+                transactions.total_paid,
+                transactions.total_return,
                 transactions.transaction_date,
                 transactions.invoice_number 
             FROM
@@ -39,8 +43,20 @@ class TransactionController extends Controller
             ->editColumn('transaction_date', function ($transaction) {
                 return Carbon::parse($transaction->transaction_date)->format('d-m-Y');
             })
+            ->editColumn('total_amount', function ($transaction) {
+                return 'Rp. ' . number_format($transaction->total_amount, 0, ',', '.');
+            })
             ->editColumn('grand_total', function ($transaction) {
                 return 'Rp. ' . number_format($transaction->grand_total, 0, ',', '.');
+            })
+            ->editColumn('tax', function ($transaction) {
+                return 'Rp. ' . number_format($transaction->tax, 0, ',', '.');
+            })
+            ->editColumn('total_paid', function ($transaction) {
+                return 'Rp. ' . number_format($transaction->total_paid, 0, ',', '.');
+            })
+            ->editColumn('total_return', function ($transaction) {
+                return 'Rp. ' . number_format($transaction->total_return, 0, ',', '.');
             })
             ->rawColumns(['action'])
             ->make(true);

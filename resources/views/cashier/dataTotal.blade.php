@@ -19,8 +19,15 @@
                             <p class="text-primary mb-0" style="font-size: 15pt; font-weight:600">
                                 {{ $tempTransaction->product->name }}
                             </p>
-                            <p>
+                            <p class="mb-1">
                                 Rp.{{ number_format($tempTransaction->product->price, 0, ',', '.') }}
+                            </p>
+                            <p class="text-dark mb-0" style="font-size: 10pt">
+                                Pajak : {{ $tempTransaction->product->tax }}%
+                            </p>
+                            <p>
+                                {{-- Rp.{{ number_format($tempTransaction->product->price * $tempTransaction->product->tax / 100, 0, ',', '.') }} --}}
+                                Rp.{{ number_format($tempTransaction->product->price * ($tempTransaction->product->tax / 100) * $tempTransaction->quantity, 0, ',', '.') }}
                             </p>
                         </div>
                         <div class="col-md-4 px-0">
@@ -44,8 +51,9 @@
             </div>
             @php
                 $subtotal += $tempTransaction->product->price * $tempTransaction->quantity;
-                $tax += $tempTransaction->product->price * $tempTransaction->quantity * 0.11;
-                $total += $tempTransaction->product->price * $tempTransaction->quantity * 1.11;
+                $tax += $tempTransaction->product->price * $tempTransaction->quantity * $tempTransaction->product->tax / 100;
+                // $total += $tempTransaction->product->price * $tempTransaction->quantity * 1.11;
+                $total = $subtotal + $tax;
             @endphp
         @endforeach
         <input type="hidden" id="total" value="{{ $total }}" class="d-none">
@@ -62,7 +70,7 @@
             </div>
             <div class="row justify-content-between">
                 <div class="col-auto">
-                    <p style="font-size: 13pt; font-weight:500">Pajak (11%)</p>
+                    <p style="font-size: 13pt; font-weight:500">Total Pajak</p>
                 </div>
                 <div class="col-auto">
                     <p style="font-size: 14pt; font-weight:600">Rp{{ number_format($tax, 0, ',', '.') }}</p>
