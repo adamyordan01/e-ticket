@@ -12,11 +12,11 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable, HasPermissionTrait;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
+    public function role()
+    {
+        return $this->hasOne(Role::class, 'id', 'role_id');
+    }
+
     protected $fillable = [
         'name', 'email', 'password',
     ];
