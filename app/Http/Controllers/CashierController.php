@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cashier;
 use DateTime;
 use App\Models\Product;
 use App\Models\Transaction;
@@ -14,6 +15,8 @@ class CashierController extends Controller
 {
     public function index()
     {
+        $this->authorize('viewAny', Cashier::class);
+
         $products = Product::where('status', 1)->get();
         $tempTransactions = TempTransaction::where('user_id', Auth::id())->get();
         
