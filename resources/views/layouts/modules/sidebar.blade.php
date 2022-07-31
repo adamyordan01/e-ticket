@@ -1,3 +1,6 @@
+@php
+    $role = auth()->user()->role->name;
+@endphp
 <div class="main-sidebar">
     <aside id="sidebar-wrapper">
         <div class="sidebar-brand">
@@ -18,33 +21,41 @@
                     <i class="fas fa-fire"></i> <span>Dashboard</span>
                 </a>
             </li>
-            <li class="{{ request()->is('products*') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('products.index') }}">
-                    <i class="fas fa-box-open"></i> <span>Produk</span>
-                </a>
-            </li>
-            <li class="{{ request()->is('cashier*') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('cashier.index') }}">
-                    <i class="fas fa-cash-register"></i> <span>Kasir</span>
-                </a>
-            </li>
-            <li class="{{ request()->is('check*') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('check.index') }}">
-                    <i class="fas fa-clipboard-list"></i> <span>Periksa Tiket</span>
-                </a>
-            </li>
+            @if ($role == 'admin')
+                <li class="{{ request()->is('products*') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('products.index') }}">
+                        <i class="fas fa-box-open"></i> <span>Produk</span>
+                    </a>
+                </li>
+            @endif
+            @if ($role == 'admin' || $role == 'petugas loket')
+                <li class="{{ request()->is('cashier*') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('cashier.index') }}">
+                        <i class="fas fa-cash-register"></i> <span>Kasir</span>
+                    </a>
+                </li>
+            @endif
+            @if ($role == 'admin' || $role == 'petugas scan')
+                <li class="{{ request()->is('check*') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('check.index') }}">
+                        <i class="fas fa-clipboard-list"></i> <span>Periksa Tiket</span>
+                    </a>
+                </li>
+            @endif
+            
+            @if ($role == 'admin')
+                <li class="{{ request()->is('user*') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('user.index') }}">
+                        <i class="fas fa-users"></i> <span>Pengguna</span>
+                    </a>
+                </li>
 
-            <li class="{{ request()->is('user*') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('user.index') }}">
-                    <i class="fas fa-users"></i> <span>Pengguna</span>
-                </a>
-            </li>
-
-            <li class="{{ request()->is('role*') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('role.index') }}">
-                    <i class="fas fa-user-tag"></i> <span>Role</span>
-                </a>
-            </li>
+                <li class="{{ request()->is('role*') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('role.index') }}">
+                        <i class="fas fa-user-tag"></i> <span>Role</span>
+                    </a>
+                </li>
+            @endif
         </ul>
     </aside>
 </div>
