@@ -14,6 +14,8 @@ class UserController extends Controller
 {
     public function index()
     {
+        $this->authorize('viewAny', User::class);
+
         $roles = Role::select(['id', 'name'])->get();
         return view('users.index', [
             'roles' => $roles
@@ -22,6 +24,7 @@ class UserController extends Controller
 
     public function getUSers()
     {
+        $this->authorize('viewAny', User::class);
         // make query get users relation to roles
         // $users = User;
         $users = DB::select("
