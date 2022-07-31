@@ -12,11 +12,14 @@ class ProductController extends Controller
 {
     public function index()
     {
+        $this->authorize('viewAny', Product::class);
         return view('products.index');
     }
 
     public function getProducts()
     {
+        $this->authorize('viewAny', Product::class);
+        
         $products = Product::orderBy('name', 'asc');
         
         return DataTables::of($products)
