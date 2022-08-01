@@ -59,6 +59,9 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/user', [UserController::class, 'index'])->name('user.index');
     Route::post('/user/store', [UserController::class, 'store'])->name('user.store');
     Route::get('user/get-users', [UserController::class, 'getUsers'])->name('user.get-users');
+    Route::post('/user/get-user-detail', [UserController::class, 'getUserDetail'])->name('products.get-user-detail');
+    Route::get('user/edit/{user}', [UserController::class, 'edit'])->name('user.edit');
+    Route::patch('user/edit/{user}', [UserController::class, 'update'])->name('user.update');
 
     Route::get('/transaction/get-transaction', [TransactionController::class, 'getTransactions'])->name('transaction.get-transaction');
 });

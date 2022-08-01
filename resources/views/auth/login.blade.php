@@ -1,4 +1,4 @@
-@extends('layouts.auth', ["title" => "Login Sistem Informasi IKU"])
+@extends('layouts.auth', ["title" => "Login"])
 @push('style')
     <link rel="stylesheet" href="{{ asset('assets/auth/css/style.css') }}">
 @endpush

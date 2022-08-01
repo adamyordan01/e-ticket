@@ -1,6 +1,6 @@
 <footer class="main-footer">
     <div class="footer-left">
-        Copyright &copy; Sistem Informasi IKU FKIP UNSAM - @php
+        Copyright &copy; Indothrift Fest - @php
         echo date('Y');
     @endphp
     </div>

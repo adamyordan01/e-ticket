@@ -77,10 +77,10 @@ class CashierController extends Controller
                 for ($i=0; $i < $value->quantity; $i++) {
                     $now = DateTime::createFromFormat('U.u', microtime(true));
                     // $barcode = $now->format("u");
-                    $barcode = time();
                     // $unique = strtotime(date('Y-m-d H:i:s'));
-                    // $random = rand(10, 99);
-                    // $barcode = $unique . $random;
+                    $time = time();
+                    $random = rand(1000, 9999);
+                    $barcode = $time . $random;
                     $cariProduct = Product::findOrFail($value->product_id);
                     TransactionDetail::create([
                         'user_id' => $user,
@@ -99,7 +99,9 @@ class CashierController extends Controller
                 // $barcode = $unique . $random;
                 $now = DateTime::createFromFormat('U.u', microtime(true));
                 // $barcode = $now->format("u");
-                $barcode = time();
+                $time = time();
+                $random = rand(1000, 9999);
+                $barcode = $time . $random;
 
                 TransactionDetail::create([
                     'user_id' => $user,

@@ -314,18 +314,18 @@
                     dataType: 'json',
                     success: function (response) {
                         console.log(response);
-                        $('#editProductModal').find('input[name="product_id"]').val(response.detail.id);
-                        $('#editProductModal').find('#name').val(response.detail.name);
-                        $('#editProductModal').find('#price').val(response.detail.price);
-                        $('#editProductModal').find('#tax').val(response.detail.tax);
-                        $('#editProductModal').find('#date-event').val(response.detail.date_event);
-                        if (response.detail.status == 0) {
+                        $('#editProductModal').find('input[name="product_id"]').val(response.id);
+                        $('#editProductModal').find('#name').val(response.name);
+                        $('#editProductModal').find('#price').val(response.price);
+                        $('#editProductModal').find('#tax').val(response.tax);
+                        $('#editProductModal').find('#date-event').val(response.date_event);
+                        if (response.status == 0) {
                             $('#tidak_aktif').prop('checked', true);
                         } else {
                             $('#aktif').prop('checked', true);
                         }
-                        $('#editProductModal').find('#hidden_image').val(response.detail.image);
-                        $('#editProductModal').find('#modal-preview').attr('src', '{{ asset('product') }}/' + response.detail.image);
+                        $('#editProductModal').find('#hidden_image').val(response.image);
+                        $('#editProductModal').find('#modal-preview').attr('src', '{{ asset('product') }}/' + response.image);
                         $('#editProductModal').modal('show');
                     }
                 })

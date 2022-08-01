@@ -20,7 +20,7 @@ class ProductController extends Controller
     {
         // $this->authorize('viewAny', Product::class);
         
-        $products = Product::orderBy('name', 'asc');
+        $products = Product::orderBy('date_event', 'asc');
         
         return DataTables::of($products)
             ->addIndexColumn()
@@ -71,10 +71,27 @@ class ProductController extends Controller
     {
         $product_id = $request->product_id;
 
-        $productDetail = Product::find($product_id);
-        return response()->json([
-            'detail' => $productDetail
-        ]);
+        $productDetails = Product::find($product_id);
+
+        // new code
+        $response = [];
+
+        $response['id'] = $productDetails->id;
+        $response['name'] = $productDetails->name;
+        $response['price'] = number_format($productDetails->price, 0, ',', '.');
+        $response['tax'] = $productDetails->tax;
+        $response['description'] = $productDetails->description;
+        $response['image'] = $productDetails->image;
+        $response['status'] = $productDetails->status;
+        $response['date_event'] = Carbon::parse($productDetails->date_event)->format('Y-m-d');
+
+        return response()->json($response);
+
+        // end new code
+
+        // return response()->json([
+        //     'detail' => $productDetail
+        // ]);
     }
 
     public function create()
