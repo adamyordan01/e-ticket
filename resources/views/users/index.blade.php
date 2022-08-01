@@ -21,7 +21,7 @@
 @endpush
 
 @section('modal')
-    {{-- add role --}}
+    {{-- add user --}}
     <div class="modal fade user-modal" tabindex="-1" role="dialog" id="user-modal" aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
@@ -78,36 +78,6 @@
             </div>
         </div>
     </div>
-
-    {{-- edit product --}}
-    <div class="modal fade editRoleModal" tabindex="-1" role="dialog" id="editRoleModal" aria-hidden="true">
-        <div class="modal-dialog modal-md" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modal-title">Edit Role</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form action="{{ route('role.update') }}" method="POST" id="editRole">
-                    @csrf
-                    @method('patch')
-                    <div class="modal-body">
-                        <input type="hidden" class="d-none" name="role_id">
-                        <div class="form-group">
-                            <label for="name">Nama Role</label>
-                            <input type="text" name="name" id="name" class="form-control">
-                            <span class="text-danger mt-1 error-text name_error"></span>
-                        </div>
-                    </div>
-                    <div class="modal-footer bg-whitesmoke br">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
-                        <button type="submit" id="btn-update" value="update" class="btn btn-primary">Ubah Data</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
 @endsection
 
 @section('section-header')
@@ -121,6 +91,16 @@
         <div class="col-md-12">
             <button class="btn btn-add py-2 mb-3" id="create-user" data-toggle="modal" data-target="#user-modal">Tambah Pengguna</button>
         </div>
+        @if (session('success'))
+            <div class="col-md-12">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <strong>Berhasil!</strong> {{ session('success') }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+        @endif
     </div>
     <div class="row">
         <div class="col-md-12">
@@ -219,6 +199,39 @@
                     }
                 });
             });
+
+            // edit data
+            // $(document).on('click', '#editButton', function () {
+            //     let user_id = $(this).data('id');
+            //     $('#edit-user-modal').find('form')[0].reset();
+            //     $('#edit-user-modal').find('span.error-text').text('');
+
+            //     $.ajax({
+            //         url: "{{ route('products.get-user-detail') }}",
+            //         type: 'POST',
+            //         data: {
+            //             user_id: user_id
+            //         },
+            //         dataType: 'json',
+            //         success: function (response) {
+            //             let admin = $('#edit-user-modal').find('#admin').val();
+
+            //             console.log(admin, response);
+            //             $('#edit-user-modal').modal('show');
+            //             $('#edit-user-modal').find('input[name="user_id"]').val(response.detail.id);
+            //             $('#edit-user-modal').find('#name').val(response.detail.name);
+            //             $('#edit-user-modal').find('#username').val(response.detail.username);
+            //             $('#edit-user-modal').find('#email').val(response.detail.email);
+            //             if (response.detail.role_id == admin) {
+            //                 $('#admin').prop('checked', true);
+            //             } else if (response.detail.role_id == 2) {
+            //                 $('#petugas-scan').prop('checked', true);
+            //             } else if (response.detail.role_id == 3) {
+            //                 $('#petugas-loket').prop('checked', true);
+            //             }
+            //         }
+            //     })
+            // })
 
 
 

@@ -53,7 +53,8 @@ class UserPolicy
      */
     public function update(User $user, User $model)
     {
-        //
+        $role = $user->role->name;
+        return $role == 'admin';
     }
 
     /**

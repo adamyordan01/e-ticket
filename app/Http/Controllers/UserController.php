@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\UpdateUserRequest;
 use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
@@ -16,7 +17,7 @@ class UserController extends Controller
     {
         $this->authorize('viewAny', User::class);
 
-        $roles = Role::select(['id', 'name'])->get();
+        $roles = Role::select(['id', 'name', 'slug'])->get();
         return view('users.index', [
             'roles' => $roles
         ]);
@@ -45,9 +46,10 @@ class UserController extends Controller
         return datatables()->of($users)
             ->addIndexColumn()
             ->addColumn('action', function ($user) {
-                $buttonEdit = '<button data-toggle="tooltip" data-placement="top" title="Edit Produk" data-id="'.$user->id.'" id="editButton" class="btn btn-info mr-2"><i class="fas fa-edit"></i></button>';
-                $buttonDelete = '<button data-toggle="tooltip" data-placement="top" title="Delete Produk" data-id="'.$user->id.'" id="deleteButton" class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>';
-                return $buttonEdit . $buttonDelete;
+                // $buttonEdit = '<button data-toggle="tooltip" data-placement="top" title="Edit Produk" data-id="'.$user->id.'" id="editButton" class="btn btn-info mr-2"><i class="fas fa-edit"></i></button>';
+                // $buttonDelete = '<button data-toggle="tooltip" data-placement="top" title="Delete Produk" data-id="'.$user->id.'" id="deleteButton" class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>';
+                $buttonEdit = '<a href="/user/edit/'.$user->id.'" class="btn btn-info"><i class="fas fa-edit"></i></a>';
+                return $buttonEdit;
             })
             ->editColumn('created_at', function ($user) {
                 return Carbon::parse($user->created_at)->format('d-m-Y');
@@ -64,6 +66,15 @@ class UserController extends Controller
             })
             ->rawColumns(['action', 'status'])
             ->make(true);
+    }
+
+    public function getUserDetail(Request $request)
+    {
+        $user_id = $request->user_id;
+        $user = User::find($user_id);
+        return response()->json([
+            'detail' => $user
+        ]);
     }
 
     public function store(Request $request)
@@ -108,5 +119,40 @@ class UserController extends Controller
                 'message' => 'Pengguna berhasil ditambahkan'
             ]);
         }
+    }
+
+    public function edit(User $user)
+    {
+        $this->authorize('update', $user);
+
+        $roles = Role::select(['id', 'name', 'slug'])->get();
+        return view('users.edit', [
+            'roles' => $roles,
+            'user' => $user
+        ]);
+    }
+
+    public function update(UpdateUserRequest $request, User $user)
+    {
+        // dd($request->all());
+        if ($request->password) {
+            $user->update([
+                'name' => $request->name,
+                'username' => $request->username,
+                'email' => $request->email,
+                'password' => bcrypt($request->password),
+                'role_id' => $request->role,
+                'status' => $request->status
+            ]);
+        } else {
+            $user->update([
+                'name' => $request->name,
+                'username' => $request->username,
+                'email' => $request->email,
+                'role_id' => $request->role,
+                'status' => $request->status
+            ]);
+        }
+        return redirect()->route('user.index')->with('success', 'Pengguna berhasil diubah');
     }
 }
