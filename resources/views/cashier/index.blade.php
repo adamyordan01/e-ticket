@@ -27,18 +27,81 @@
         }
 
         .product-image{
-            width: 75px;
-            height: 75px;
+            width: 55px;
+            height: 55px;
             -webkit-border-radius: 60px;
             -webkit-background-clip: padding-box;
             -moz-border-radius: 60px;
             -moz-background-clip: padding;
             border-radius: 60px;
             background-clip: padding-box;
-            margin: 7px 0 0 5px;
+            margin: 0px 12px 0 0px;
             float: left;
             background-size: cover;
             background-position: center center;
+        }
+
+        .product-table {
+            height: 40vh;
+            overflow-y: auto;
+        }
+
+        .list-ticket {
+            height: 100vh;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: 10px;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        ul.product-list {
+            padding: 0;
+        }
+
+        .product-list li {
+            padding: 15px;
+            margin: 0;
+            border-bottom: 1px solid #e6e6e6;
+            box-shadow: 0 4px 4px 0 rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            margin: 0 0 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .product-images .product-img {
+            display: flex;
+            margin-right: 10px;
+        }
+
+        .product-images .product-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        /* width */
+        ::-webkit-scrollbar {
+        width: 6px;
+        }
+
+        /* Track */
+        ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        }
+
+        /* Handle */
+        ::-webkit-scrollbar-thumb {
+        background: #888;
+        }
+
+        /* Handle on hover */
+        ::-webkit-scrollbar-thumb:hover {
+        background: #555;
         }
     </style>
 @endpush
@@ -51,50 +114,52 @@
 
 @section('content')
     <div class="row">
-        <div class="col-lg-7 col-md-12 col-sm-12 col-xs-12">
+        <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12">
             <div class="card">
                 <div class="card-header">
                     <h3>Produk</h3>
                 </div>
                 <div class="card-body">
-                    <div class="row">
-                        @foreach ($products as $product)
-                            <input type="hidden" name="product_id" class="d-none" id="product_id" value="{{ $product->id }}">
-                            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
-                                <article class="article article-style-b">
-                                    <div class="article-header">
-                                        <div class="article-image" data-background="{{ asset('product/' . $product->image) }}">
+                    <div class="list-ticket">
+                        <div class="row">
+                            @foreach ($products as $product)
+                                <input type="hidden" name="product_id" class="d-none" id="product_id" value="{{ $product->id }}">
+                                <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                    <article class="article article-style-b">
+                                        <div class="article-header">
+                                            <div class="article-image" data-background="{{ asset('product/' . $product->image) }}">
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="article-details">
-                                        <div class="article-title">
-                                            <h2 style="font-size: 13pt; color: #5a5b5b">
-                                                {{ $product->name }}
-                                            </h2>
+                                        <div class="article-details">
+                                            <div class="article-title">
+                                                <h2 style="font-size: 10pt; color: #5a5b5b">
+                                                    {{ $product->name }}
+                                                </h2>
+                                            </div>
+                                            <p class="text-primary" style="font-size: 13pt; font-weight:600">
+                                                Rp{{ number_format($product->price, 0, ',', '.') }}
+                                            </p>
+                                            <div class="article-cta">
+                                                <a class="btn btn-primary btn-lg btn-block" id="add-to-cart" data-id="{{ $product->id }}" href="javascript:void(0)">
+                                                    <i class="fas fa-cart-plus"></i>
+                                                    Pesan Tiket
+                                                </a>
+                                            </div>
                                         </div>
-                                        <p class="text-primary" style="font-size: 18pt; font-weight:600">
-                                            Rp{{ number_format($product->price, 0, ',', '.') }}
-                                        </p>
-                                        <div class="article-cta">
-                                            <a class="btn btn-primary btn-lg btn-block" id="add-to-cart" data-id="{{ $product->id }}" href="javascript:void(0)">
-                                                <i class="fas fa-cart-plus"></i>
-                                                Pesan Tiket
-                                            </a>
-                                        </div>
-                                    </div>
-                                </article>
-                            </div>
-                        @endforeach
+                                    </article>
+                                </div>
+                            @endforeach
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-lg-5 col-md-12 col-sm-12 col-xs-12" id="dataTotal">
+        <div class="col-lg-6 col-md-12 col-sm-12 col-xs-12" id="dataTotal">
             <div class="card shadow-none">
                 <div class="card-header">
                     <h3>Pesanan</h3>
                 </div>
-                <div class="card-body">
+                <div class="card-body product-table">
                     @php
                         $subtotal = 0;
                         $tax = 0;
@@ -102,40 +167,61 @@
                     @endphp
                     @foreach ($tempTransactions as $tempTransaction)
                         <div class="card shadow mb-2">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col-md-2 pl-0">
-                                        <img src="{{ asset('product') . "/" .$tempTransaction->product->image }}" class="product-image" alt="{{ $tempTransaction->product->name }}">
+                            <div class="card-body p-2">
+                                <div class="row justify-content-center align-items-center">
+                                    <div class="col-lg-2 col-md-2 col-sm-2">
+                                        <img class="product-image" src="{{ asset('product/' . $tempTransaction->product->image) }}" alt="">
                                     </div>
-                                    <div class="col-md-5 pl-4">
-                                        <p class="text-primary mb-0" style="font-size: 15pt; font-weight:600">
-                                            {{ $tempTransaction->product->name }}
-                                        </p>
-                                        <p class="mb-1">
-                                            Rp.{{ number_format($tempTransaction->product->price, 0, ',', '.') }}
-                                        </p>
-                                        <p class="text-dark mb-0" style="font-size: 10pt">
-                                            Pajak : {{ $tempTransaction->product->tax }}%
-                                        </p>
-                                        <p>
-                                            {{-- Rp.{{ number_format($tempTransaction->product->price * $tempTransaction->product->tax / 100, 0, ',', '.') }} --}}
-                                            Rp.{{ number_format($tempTransaction->product->price * ($tempTransaction->product->tax / 100) * $tempTransaction->quantity, 0, ',', '.') }}
-                                        </p>
+                                    <div class="col-lg-5 col-md-5 col-sm-5 ml-2">
+                                        <div class="row">
+                                            <div class="col-lg-12 col-md-12 col-sm-12 pr-0">
+                                                <p class="mb-0" style="font-size: 10pt; font-weight: 600">
+                                                    {{ $tempTransaction->product->name }}
+                                                </p>
+                                            </div>
+                                            <div class="col-lg-12 col-md-12 col-sm-12 pr-0">
+                                                <p class="mb-1" style="font-size: 10pt; font-weight: 600">
+                                                    {{-- {{ $tempTransaction->product->price }} --}}
+                                                    Rp{{ number_format($tempTransaction->product->price, 0, ',', '.') }}
+                                                </p>
+                                            </div>
+                                            <div class="col-l-10g col-md-10 col-sm-10 pr-0">
+                                                <div class="input-group input-group-sm mb-3">
+                                                    <div class="input-group-prepend">
+                                                        <a href="javascript:void(0)" onclick="funcMin('{{ $loop->iteration }}', '{{ $tempTransaction->product_id }}')" id="dec-qty"id="dec-qty" data-id="{{ $tempTransaction->product_id }}" class="btn btn-sm btn-primary">
+                                                            <i class="fas fa-minus"></i>
+                                                        </a>
+                                                    </div>
+                                                    <input style="width: 30% !important; text-align:center" type="text" onkeyup="input('{{ $loop->iteration }}', '{{ $tempTransaction->product_id }}')" class="form-control form-control-sm" id="quantity{{ $loop->iteration }}" value="{{ $tempTransaction->quantity }}">
+                                                    <div class="input-group-append">
+                                                        <a href="javascript:void(0)" onclick="funcPlus('{{ $loop->iteration }}', '{{ $tempTransaction->product_id }}')" id="inc-qty"id="inc-qty" data-id="{{ $tempTransaction->product_id }}" class="btn btn-sm btn-primary">
+                                                            <i class="fas fa-plus"></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div class="col-md-4 px-0">
-                                        <form class="form-inline">
-                                            <a href="javascript:void(0)" onclick="funcMin('{{ $loop->iteration }}', '{{ $tempTransaction->product_id }}')" class="btn btn-primary btn-sm dec-qty" id="dec-qty" data-id="{{ $tempTransaction->product_id }}">
-                                                <i class="fas fa-minus"></i>
-                                            </a>
-                                            <input type="text" style="width: 40%; text-align:center" onkeyup="input('{{ $loop->iteration }}', '{{ $tempTransaction->product_id }}')" class="form-control mx-1" id="quantity{{ $loop->iteration }}" value="{{ $tempTransaction->quantity }}">
-                                            <a href="javascript:void(0)" onclick="funcPlus('{{ $loop->iteration }}', '{{ $tempTransaction->product_id }}')" class="btn btn-primary btn-sm inc-qty" id="inc-qty" data-id="{{ $tempTransaction->product_id }}">
-                                                <i class="fas fa-plus"></i>
-                                            </a>
-                                        </form>
+                                    <div class="col-lg-2 col-md-2 col-sm-2 ml-1">
+                                        <div class="row">
+                                            <div class="col-lg-12 col-md-12 col-sm-12 p-0">
+                                                <p class="text-dark mb-0" style="font-size: 8pt">
+                                                    Pajak : {{ $tempTransaction->product->tax }}%
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-lg-12 col-md-12 col-sm-12 p-0">
+                                                <p style="font-size: 9pt">
+                                                    Rp.{{ number_format($tempTransaction->product->price * ($tempTransaction->product->tax / 100) * $tempTransaction->quantity, 0, ',', '.') }}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        
                                     </div>
-                                    <div class="col-md-1 ml-auto">
-                                        <a href="javascript:void(0)" class="btn-link text-danger" data-id="{{ $tempTransaction->product_id }}" id="delete-cart">
-                                            <i class="fas fa-times"></i>
+                                    <div class="col-lg-1 col-md-1 col-sm-1">
+                                        <a href="javascript:void(0)" data-id="{{ $tempTransaction->product_id }}" id="delete-cart">
+                                            <i class="far fa-trash-alt text-danger"></i>
                                         </a>
                                     </div>
                                 </div>
@@ -152,6 +238,60 @@
                     <input type="hidden" id="total" value="{{ $total }}" class="d-none">
                     <input type="hidden" id="total_return2" name="total_return2" class="d-none">
                     <input type="hidden" id="total_tax" name="total_tax" class="d-none" value="{{ $tax }}">
+                    {{-- <div class="mt-5">
+                        <div class="row justify-content-between">
+                            <div class="col-auto">
+                                <p style="font-size: 13pt; font-weight:500">Subtotal</p>
+                            </div>
+                            <div class="col-auto">
+                                <p style="font-size: 14pt; font-weight:600">Rp{{ number_format($subtotal, 0, ',', '.') }}</p>
+                            </div>
+                        </div>
+                        <div class="row justify-content-between">
+                            <div class="col-auto">
+                                <p style="font-size: 13pt; font-weight:500">Total Pajak</p>
+                            </div>
+                            <div class="col-auto">
+                                <p style="font-size: 14pt; font-weight:600">Rp{{ number_format($tax, 0, ',', '.') }}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="">
+                                    <hr style="border-top:dashed 2px">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row justify-content-between">
+                            <div class="col-auto">
+                                <p style="font-size: 13pt; font-weight:600">Total</p>
+                            </div>
+                            <div class="col-auto">
+                                <p style="font-size: 14pt; font-weight:700">Rp{{ number_format($total, 0, ',', '.') }}</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group mb-2">
+                                    <label for="total_paid" style="font-size: 12pt">Bayar</label>
+                                    <input type="text" class="form-control total_paid" name="total_paid" id="total_paid">
+                                </div>
+                                <div class="form-group mt-0">
+                                    <label for="total_return" style="font-size: 12pt">Kembalian</label>
+                                    <input type="text" class="form-control" name="total_return" id="total_return">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-4">
+                            <div class="col-12">
+                                <button class="btn btn-primary btn-lg btn-block" id="payment" style="font-size: 14pt">Bayar</button>
+                            </div>
+                        </div>
+                    </div> --}}
+                </div>
+            </div>
+            <div class="card shadow-none">
+                <div class="card-body">
                     <div class="mt-5">
                         <div class="row justify-content-between">
                             <div class="col-auto">
@@ -365,36 +505,40 @@
 
         function input (row, product) {
             let qty = $('#quantity' + row).val();
-
-            if (qty <= 0) {
-                $.ajax({
-                    url: "{{ route('temp-transaction.destroy') }}",
-                    method: "POST",
-                    dataType: "json",
-                    data: {
-                        product_id: product,
-                    },
-                    success: function(data) {
-                    }
-                })
-                getTotal();
-                getTotal();
-            } else {
-                $.ajax({
-                    url: "{{ route('temp-transaction.index') }}" + '/' + product,
-                    method: "PUT",
-                    dataType: "json",
-                    data: {
-                        status: 'input',
-                        qty: qty,
-                    },
-                    success: function (data) {
-                        // $('#quantity' + row).val(data.quantity);
-                    }
-                })
-                getTotal();
-                getTotal();
+            console.log(qty);
+            if (qty!= ''){
+                if (qty <= 0) {
+                    $.ajax({
+                        url: "{{ route('temp-transaction.destroy') }}",
+                        method: "POST",
+                        dataType: "json",
+                        data: {
+                            product_id: product,
+                        },
+                        success: function(data) {
+                        }
+                    })
+                    getTotal();
+                    getTotal();
+                } else {
+                    $.ajax({
+                        url: "{{ route('temp-transaction.index') }}" + '/' + product,
+                        method: "PUT",
+                        dataType: "json",
+                        data: {
+                            status: 'input',
+                            qty: qty,
+                        },
+                        success: function (data) {
+                            // $('#quantity' + row).val(data.quantity);
+                        }
+                    })
+                    getTotal();
+                    getTotal();
+                }
             }
+
+            
         }
 
         function funcPlus(row, product){

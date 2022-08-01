@@ -76,7 +76,8 @@ class CashierController extends Controller
             if ($value->quantity >= 2){
                 for ($i=0; $i < $value->quantity; $i++) {
                     $now = DateTime::createFromFormat('U.u', microtime(true));
-                    $barcode = $now->format("u");
+                    // $barcode = $now->format("u");
+                    $barcode = time();
                     // $unique = strtotime(date('Y-m-d H:i:s'));
                     // $random = rand(10, 99);
                     // $barcode = $unique . $random;
@@ -97,7 +98,8 @@ class CashierController extends Controller
                 // $random = rand(10, 99);
                 // $barcode = $unique . $random;
                 $now = DateTime::createFromFormat('U.u', microtime(true));
-                $barcode = $now->format("u");
+                // $barcode = $now->format("u");
+                $barcode = time();
 
                 TransactionDetail::create([
                     'user_id' => $user,
