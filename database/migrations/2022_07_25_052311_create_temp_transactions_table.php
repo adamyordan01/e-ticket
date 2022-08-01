@@ -14,11 +14,11 @@ class CreateTempTransactionsTable extends Migration
     public function up()
     {
         Schema::create('temp_transactions', function (Blueprint $table) {
+            $table->bigIncrements('id');
             $table->foreignId('user_id')->constrained();
             $table->foreignId('product_id')->constrained();
             $table->integer('quantity');
             $table->integer('total_price');
-            $table->primary(['user_id', 'product_id']);
             $table->timestamps();
         });
     }

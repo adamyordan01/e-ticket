@@ -16,7 +16,8 @@ class TempTransaction extends Model
         'total_price',
     ];
 
-    protected $primaryKey = 'product_id';
+    // protected $primaryKey = ['product_id', 'user_id'];
+    // public $incrementing = false;
 
     public function product()
     {

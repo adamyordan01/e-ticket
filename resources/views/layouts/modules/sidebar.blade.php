@@ -50,11 +50,11 @@
                     </a>
                 </li>
 
-                <li class="{{ request()->is('role*') ? 'active' : '' }}">
+                {{-- <li class="{{ request()->is('role*') ? 'active' : '' }}">
                     <a class="nav-link" href="{{ route('role.index') }}">
                         <i class="fas fa-user-tag"></i> <span>Role</span>
                     </a>
-                </li>
+                </li> --}}
             @endif
         </ul>
     </aside>

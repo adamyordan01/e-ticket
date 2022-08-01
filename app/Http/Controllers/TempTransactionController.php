@@ -31,7 +31,7 @@ class TempTransactionController extends Controller
         $user = Auth::id();
         $product = Product::where('id', $request->product_id)->first();
 
-        $cek = TempTransaction::where('product_id', $request->product_id)->first();
+        $cek = TempTransaction::where('user_id', $user)->where('product_id', $request->product_id)->first();
         // dd($cek);
         if ($cek) {
             $cek->update([
@@ -52,8 +52,12 @@ class TempTransactionController extends Controller
 
     public function update(Request $request, $id)
     {
-        $data = TempTransaction::where('product_id', $id)->first();
-        $product = Product::where('id', $id)->first();
+        $user = Auth::id();
+        $data = TempTransaction::where('user_id', $user)->where('product_id', $id)->first();
+        // $data = TempTransaction::findOrFail($id);
+        // dd($data);
+
+        $product = Product::where('id', $data->product_id)->first();
         if ($request->status == 'plus'){
             $data->update([
                 'quantity' => $data->quantity + 1,
@@ -75,7 +79,7 @@ class TempTransactionController extends Controller
     public function destroy(Request $request)
     {
         $user = Auth::id();
-        $tempTransaction = TempTransaction::where('product_id', $request->product_id)->first();
+        $tempTransaction = TempTransaction::where('user_id',$user)->where('product_id', $request->product_id)->first();
         $tempTransaction->delete();
     }
 }

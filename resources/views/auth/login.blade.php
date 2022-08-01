@@ -50,12 +50,12 @@
                                             <label class="custom-control-label" style="color: #01d28e" for="remember">Remember Me</label>
                                         </div>
                                     </div>
-                                    <div class="w-50 text-md-right">
+                                    {{-- <div class="w-50 text-md-right">
                                         <a href="#">Forgot Password</a>
-                                    </div>
+                                    </div> --}}
                                 </div>
                             </form>
-                            <p class="text-center">Not a member? <a data-toggle="tab" href="#signup">Sign Up</a></p>
+                            {{-- <p class="text-center">Not a member? <a data-toggle="tab" href="#signup">Sign Up</a></p> --}}
                         </div>
                     </div>
                 </div>

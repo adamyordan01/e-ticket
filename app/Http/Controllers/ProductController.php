@@ -18,7 +18,7 @@ class ProductController extends Controller
 
     public function getProducts()
     {
-        $this->authorize('viewAny', Product::class);
+        // $this->authorize('viewAny', Product::class);
         
         $products = Product::orderBy('name', 'asc');
         
