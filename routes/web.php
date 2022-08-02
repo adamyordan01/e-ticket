@@ -11,8 +11,9 @@ use App\Http\Controllers\PrintController;
 use App\Http\Controllers\CashierController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\TempTransactionController;
 use App\Http\Controllers\TransactionController;
+use App\Http\Controllers\ChangePasswordController;
+use App\Http\Controllers\TempTransactionController;
 
 // use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
@@ -64,10 +65,13 @@ Route::group(['middleware' => ['auth']], function () {
     Route::patch('user/edit/{user}', [UserController::class, 'update'])->name('user.update');
 
     Route::get('/transaction/get-transaction', [TransactionController::class, 'getTransactions'])->name('transaction.get-transaction');
+
+    Route::get('change-password/index', [ChangePasswordController::class, 'index'])->name('change-password.index');
+    Route::patch('change-password/update', [ChangePasswordController::class, 'update'])->name('change-password.update');
 });
 
 
 
-Route::get('/welcome', function () {
-    return view('welcome');
-});
+// Route::get('/welcome', function () {
+//     return view('welcome');
+// });
