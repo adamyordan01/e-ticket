@@ -68,7 +68,10 @@
                     <p class="date-event">{{ $item->product->date_event->format('l, d-m-Y') }}</p>
                 </div>
                 <div class="barcode">
-                    {!! DNS1D::getBarcodeSVG($item->barcode, 'C39',1,65); !!}
+                    {{-- {!! DNS1D::getBarcodeSVG($item->barcode, 'C39',1,65); !!} --}}
+                    {{-- {!! DNS1D::getBarcodeSVG($item->barcode, 'C39',0.5,65); !!} --}}
+                    {{-- DNS2D::getBarcodeSVG('4445645656', 'DATAMATRIX'); --}}
+                    {!! DNS2D::getBarcodeSVG($item->barcode, 'QRCODE', 5, 5); !!}
                 </div>
                 <hr class="line">
             @endforeach
