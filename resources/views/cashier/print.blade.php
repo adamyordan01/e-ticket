@@ -72,6 +72,7 @@
                     {{-- {!! DNS1D::getBarcodeSVG($item->barcode, 'C39',0.5,65); !!} --}}
                     {{-- DNS2D::getBarcodeSVG('4445645656', 'DATAMATRIX'); --}}
                     {!! DNS2D::getBarcodeSVG($item->barcode, 'QRCODE', 5, 5); !!}
+                    <p style="text-align: center">{{ $item->barcode }}</p>
                 </div>
                 <hr class="line">
             @endforeach
