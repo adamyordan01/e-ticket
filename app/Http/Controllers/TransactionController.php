@@ -13,25 +13,47 @@ class TransactionController extends Controller
     public function getTransactions()
     {
         $user = Auth::id();
+        $role = Auth::user()->role->name;
 
-        $transactions = DB::select("
-            SELECT
-                transactions.id,
-                transactions.total_amount,
-                transactions.grand_total,
-                transactions.tax,
-                transactions.total_paid,
-                transactions.total_return,
-                transactions.transaction_date,
-                transactions.invoice_number 
-            FROM
-                transactions
-                INNER JOIN users ON transactions.user_id = users.id 
-            WHERE
-                transactions.user_id = '$user'
-            ORDER BY
-                transactions.invoice_number DESC
-        ");
+        if ($role == 'admin') {
+            $transactions = DB::select("
+                SELECT
+                    transactions.id,
+                    transactions.total_amount,
+                    transactions.grand_total,
+                    transactions.tax,
+                    transactions.total_paid,
+                    transactions.total_return,
+                    transactions.transaction_date,
+                    transactions.invoice_number 
+                FROM
+                    transactions
+                    INNER JOIN users ON transactions.user_id = users.id
+                ORDER BY
+                    transactions.invoice_number DESC
+            ");
+        } else {
+            $transactions = DB::select("
+                SELECT
+                    transactions.id,
+                    transactions.total_amount,
+                    transactions.grand_total,
+                    transactions.tax,
+                    transactions.total_paid,
+                    transactions.total_return,
+                    transactions.transaction_date,
+                    transactions.invoice_number 
+                FROM
+                    transactions
+                    INNER JOIN users ON transactions.user_id = users.id 
+                WHERE
+                    transactions.user_id = '$user'
+                ORDER BY
+                    transactions.invoice_number DESC
+            ");
+        }
+
+
 
         return DataTables::of($transactions)
             ->addIndexColumn()
